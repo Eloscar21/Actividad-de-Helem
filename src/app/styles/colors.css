@@ -1,0 +1,7 @@
+.blue {
+    background-color: #2196F3;
+}
+
+.light-text, .light-text a, .light-text span {
+    color: #ffffff !important;
+}

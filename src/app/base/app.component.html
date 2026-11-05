@@ -1,0 +1,19 @@
+<nav class="main-nav blue large-padding light-text">
+    <a routerLink="/">
+        <span class="nav-title">What to do</span>
+    </a>
+    <div class="float-right" *ngIf="afAuth.authState | async">
+        <a routerLink="/libro/nuevo" style="margin-right: 15px;">
+            <i class="fa fa-book small-font"></i>
+            <span class="small-font"> Mis Libros</span>
+        </a>
+        <a routerLink="/creator">
+            <i class="fa fa-list small-font"></i>
+            <span class="small-font"> Mis Listas</span>
+        </a>
+        <a (click)="logout()" style="cursor: pointer; margin-left: 15px;" title="Cerrar sesión">
+            <i class="fa fa-sign-out"></i>
+        </a>
+    </div>
+</nav>
+<router-outlet></router-outlet>

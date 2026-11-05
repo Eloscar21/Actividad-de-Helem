@@ -1,0 +1,24 @@
+<div class="creator-container">
+    <!-- Formulario para crear lista -->
+    <div class="form-card">
+        <h2 class="form-title">
+            <i class="fa fa-pencil-square-o" style="color: #2196F3;"></i> Nueva Lista
+        </h2>
+        
+        <div>
+            <input 
+                type="text" 
+                class="custom-input" 
+                [(ngModel)]="lista.titulo" 
+                (keyup.enter)="save()"
+                placeholder="Escribe el nombre de tu lista..."
+            >
+        </div>
+
+        <button type="button" class="btn-submit" (click)="save()">
+            <i class="fa fa-save"></i> Guardar Lista
+        </button>
+    </div>
+</div>
+
+

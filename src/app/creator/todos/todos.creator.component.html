@@ -1,0 +1,18 @@
+<div class="text-right">
+    <button type="button" class="large-padding pointer no-background light-text">
+        Agrega pendiente
+        <i class="fa fa-plus"></i>
+    </button>
+</div>
+<div class="lateral-padding">
+    <input type="text" placeholder="Que vas hacer?" [(ngModel)]="todo.content" class="form-control" required min="3">
+    <textarea placeholder="Informacion adicional (opcional)" [(ngModel)]="todo.description"
+        class="form-control"></textarea>
+
+    <div class="top-space">
+        <button type="button" class="btn blue light-text full-width" (click)="save()">
+            <i class="fa fa-save"></i>
+            Guardar
+        </button>
+    </div>
+</div>

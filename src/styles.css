@@ -1,0 +1,157 @@
+/* You can add global styles to this file, and also import other style files */
+@import './styles/colors.css';
+@import './styles/defaults.css';
+@import '~font-awesome/css/font-awesome.min.css';
+
+body {
+    color: black;
+    padding: 0;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+html {
+    padding: 0;
+    margin: 0;
+}
+
+.app-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app-container .router-container {
+    width: 60%;
+    border-right: 2px #ccc solid;
+    padding: 1em;
+}
+
+.nav-links {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 1em;
+}
+
+.nav-links .nav-title {
+    margin: 0;
+    font-weight: bold;
+}
+
+.nav-links a {
+    color: #0078d7;
+    font-size: 1.5em;
+    margin-right: 1em;
+    text-decoration: none;
+}
+
+input {
+    border: 1px solid #0078d7;
+    padding: 0.5em;
+}
+
+button {
+    background-color: #0078d7;
+    color: white;
+    border: none;
+    padding: 0.75em;
+}
+
+.full-width {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.top-space {
+    margin-top: 1em;
+}
+
+.large-padding {
+    padding: 16px 24px;
+}
+
+.lateral-padding {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.main-nav a {
+    text-decoration: none;
+}
+
+.main-nav .nav-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.float-right {
+    display: flex;
+    align-items: center;
+}
+
+.card {
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+    position: relative;
+}
+
+.card.with-badge, .card.width-badge {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-areas: "titele titele titele titele titele titele titele titele titele badge";
+}
+
+.card.with-badge h4, .card.width-badge h4 {
+    grid-area: titele;
+    margin: 0;
+}
+
+.card.with-badge .badge, .card.width-badge .badge {
+    grid-area: badge;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.card.with-badge .badge span, .card.width-badge .badge span {
+    height: 3em;
+    width: 3em;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.7em;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.no-background {
+    background-color: transparent;
+}

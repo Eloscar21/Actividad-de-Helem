@@ -1,0 +1,12 @@
+body {
+    margin: 0;
+    font-family: 'Open Sans', Roboto, Arial, Helvetica, sans-serif;
+}
+
+a {
+    color: indianred;
+}
+
+a:visited {
+    color: indianred
+}
