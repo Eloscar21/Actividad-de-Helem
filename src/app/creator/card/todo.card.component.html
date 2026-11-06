@@ -1,4 +1,13 @@
-<article class="card">
-    <h4>{{todo?.content}}</h4>
-    <p *ngIf="todo.description">{{todo.description}}</p>
+<article
+    class="card large-padding top-space"
+    (mousedown)="onDragStart($event.clientX)"
+    (touchstart)="onDragStart($event.touches[0].clientX)"
+    (touchmove)="onDragMove($event.touches[0].clientX)"
+    (touchend)="onDragEnd()"
+    [style.transform]="'translateX(' + offsetX + 'px)'"
+    [style.transition]="isDragging ? 'none' : 'transform 0.25s ease-out'"
+    [style.cursor]="isDragging ? 'grabbing' : 'grab'"
+    style="user-select: none; touch-action: pan-y;">
+    <h4 style="margin: 0;">{{todo?.content}}</h4>
+    <p *ngIf="todo.description" style="margin: 8px 0 0 0;">{{todo.description}}</p>
 </article>

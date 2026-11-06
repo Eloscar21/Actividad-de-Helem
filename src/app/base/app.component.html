@@ -1,5 +1,5 @@
 <nav class="main-nav blue large-padding light-text">
-    <a routerLink="/">
+    <a routerLink="/" (click)="onWhatToDoClick()" class="pointer">
         <span class="nav-title">What to do</span>
     </a>
     <div class="float-right" *ngIf="afAuth.authState | async">

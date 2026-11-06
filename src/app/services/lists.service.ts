@@ -4,7 +4,7 @@ import { AuthService } from "./auth.services";
 import { ILista } from "../structures/lista";
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { map } from 'rxjs/operators';
 
 @Injectable()
@@ -12,6 +12,11 @@ export class ListsService {
     public uid: string = '';
     public lists!: AngularFirestoreCollection<ILista>;
     public listas!: Observable<ILista[]>;
+    public slideTrigger = new Subject<void>();
+
+    triggerSlide() {
+        this.slideTrigger.next();
+    }
 
     constructor(private afs: AngularFirestore, private auth: AuthService) {
         this.auth.getUser().subscribe(user => {
