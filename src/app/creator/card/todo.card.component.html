@@ -1,13 +1,7 @@
-<div
-    [style.transform]="'translateX(' + offsetX + 'px)'"
-    [style.transition]="isDragging ? 'none' : 'transform 0.25s ease-out'">
-    <article
-        class="card large-padding top-space"
-        [@pressAnimation]="pressState"
-        (pointerdown)="onPointerDown($event)"
-        [style.cursor]="isDragging ? 'grabbing' : 'pointer'"
-        style="user-select: none; touch-action: none;">
-        <h4 style="margin: 0;">{{todo?.content}}</h4>
-        <p *ngIf="todo.description" style="margin: 8px 0 0 0;">{{todo.description}}</p>
-    </article>
-</div>
+<article
+    class="card large-padding top-space pointer"
+    (pointerdown)="onPointerDown($event)"
+    style="user-select: none; touch-action: none;">
+    <h4 style="margin: 0;">{{todo?.content}}</h4>
+    <p *ngIf="todo.description" style="margin: 8px 0 0 0;">{{todo.description}}</p>
+</article>
