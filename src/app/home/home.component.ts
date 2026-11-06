@@ -35,6 +35,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
+  onListClick(list: any): void {
+    console.log('Clic en la lista:', list);
+  }
+
   ngOnDestroy(): void {
     if (this.sub) {
       this.sub.unsubscribe();
