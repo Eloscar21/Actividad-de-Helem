@@ -29,11 +29,36 @@ export class TodoCreatorComponent implements OnInit {
     @Input() id!: string;
 
     public formState: string = 'collapsed';
+    public selectedDate: string = '';
+    public selectedTime: string = '';
     public todo: ITodo = { content: '', status: TStatus.Created };
 
     constructor(private todoS: TodoService) { }
 
     ngOnInit(): void {
+    }
+
+    openCalendar(dateInput: HTMLInputElement): void {
+        if (typeof (dateInput as any).showPicker === 'function') {
+            (dateInput as any).showPicker();
+        } else {
+            dateInput.focus();
+            dateInput.click();
+        }
+    }
+
+    onDateChange(dateValue: string): void {
+        this.selectedDate = dateValue;
+        if (dateValue) {
+            const parts = dateValue.split('-');
+            const formattedDate = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : dateValue;
+            const now = new Date();
+            this.selectedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            this.todo.deadline = `${formattedDate} ${this.selectedTime}`;
+        } else {
+            this.selectedTime = '';
+            this.todo.deadline = '';
+        }
     }
 
     label(): string {
@@ -56,6 +81,8 @@ export class TodoCreatorComponent implements OnInit {
         this.todoS.add(this.id, this.todo).then(() => {
             console.log('¡Todo guardado en Firestore!');
             this.todo = { content: '', status: TStatus.Created };
+            this.selectedDate = '';
+            this.selectedTime = '';
             this.formState = 'collapsed';
         }).catch(err => {
             console.error('Error al guardar:', err);

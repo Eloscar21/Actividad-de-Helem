@@ -8,6 +8,22 @@
     <input type="text" placeholder="Que vas hacer?" [(ngModel)]="todo.content" class="form-control" required min="3">
     <textarea placeholder="Informacion adicional (opcional)" [(ngModel)]="todo.description"
         class="form-control"></textarea>
+    <div style="position: relative;">
+        <input
+            type="text"
+            readonly
+            placeholder="Agregar fecha(Opcional)"
+            [(ngModel)]="todo.deadline"
+            (click)="openCalendar(hiddenDateInput)"
+            class="form-control pointer"
+            style="background-color: white;">
+        <input
+            #hiddenDateInput
+            type="date"
+            [(ngModel)]="selectedDate"
+            (change)="onDateChange(hiddenDateInput.value)"
+            style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none;">
+    </div>
 
     <div class="top-space">
         <button type="button" class="btn blue light-text full-width pointer" (click)="save()">
