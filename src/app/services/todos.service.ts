@@ -14,6 +14,64 @@ export class TodoService {
     private ref!: Observable<DocumentChangeAction<ITodo>[]>;
     private listId!: string;
     public todos!: Observable<ITodo[]>;
+    private hiddenTodoIds = new Set<string>();
+
+    private loadHiddenTodos() {
+        try {
+            if (typeof window !== 'undefined' && window.localStorage) {
+                const saved = window.localStorage.getItem('hidden_todos_ids');
+                if (saved) {
+                    const arr: string[] = JSON.parse(saved);
+                    arr.forEach(id => this.hiddenTodoIds.add(id));
+                }
+            }
+        } catch (e) { }
+    }
+
+    private saveHiddenTodos() {
+        try {
+            if (typeof window !== 'undefined' && window.localStorage) {
+                window.localStorage.setItem('hidden_todos_ids', JSON.stringify(Array.from(this.hiddenTodoIds)));
+            }
+        } catch (e) { }
+    }
+
+    isHiddenOnPage(todoId?: string): boolean {
+        this.loadHiddenTodos();
+        return !!todoId && this.hiddenTodoIds.has(todoId);
+    }
+
+    hideOnPageAndSetStatusZero(listId: string, todo: ITodo): Promise<any> {
+        this.loadHiddenTodos();
+        if (todo.id) {
+            this.hiddenTodoIds.add(todo.id);
+            this.saveHiddenTodos();
+        }
+        todo.status = 0;
+
+        if (!todo.id) {
+            return Promise.resolve();
+        }
+
+        if (this.uid) {
+            if (!this.collection || this.listId != listId) {
+                this.setCollection(listId);
+            }
+            return this.collection.doc(todo.id).update({ status: 0 });
+        }
+
+        return new Promise((resolve, reject) => {
+            this.auth.getUser().subscribe(user => {
+                if (user && user.uid) {
+                    this.uid = user.uid;
+                    this.setCollection(listId);
+                    this.collection.doc(todo.id!).update({ status: 0 }).then(resolve).catch(reject);
+                } else {
+                    reject(new Error('Usuario no autenticado'));
+                }
+            }, reject);
+        });
+    }
 
     constructor(private afs: AngularFirestore, private auth: AuthService) {
         this.auth.getUser().subscribe(user => {
@@ -70,11 +128,26 @@ export class TodoService {
     }
 
     add(listId: string, todo: ITodo): Promise<any> {
-        if (!this.collection || this.listId != listId) {
-            this.setCollection(listId);
-        }
         const createdAt = firebase.firestore.FieldValue.serverTimestamp();
         todo.createdAt = createdAt;
-        return this.collection.add(todo);
+
+        if (this.uid) {
+            if (!this.collection || this.listId != listId) {
+                this.setCollection(listId);
+            }
+            return this.collection.add(todo);
+        }
+
+        return new Promise((resolve, reject) => {
+            this.auth.getUser().subscribe(user => {
+                if (user && user.uid) {
+                    this.uid = user.uid;
+                    this.setCollection(listId);
+                    this.collection.add(todo).then(resolve).catch(reject);
+                } else {
+                    reject(new Error('Usuario no autenticado'));
+                }
+            }, reject);
+        });
     }
 }

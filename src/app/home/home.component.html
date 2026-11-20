@@ -1,12 +1,13 @@
-<div class="large-padding" style="overflow-x: hidden;" *ngIf="lists.listas | async as misListas">
-    <div *ngIf="showLists" [@enterState]="misListas.length">
-        <a routerLink="/listas/{{list.id}}" (click)="onListClick(list)" *ngFor="let list of misListas" style="text-decoration: none; display: block;">
-            <article class="card block large-padding top-space with-badge">
-                <h4>{{list.titulo}}</h4>
-                <div class="badge">
-                    <span>0</span>
-                </div>
-            </article>
-        </a>
+<div class="large-padding" style="overflow-x: hidden;" *ngIf="showLists">
+    <div *ngIf="lists.error" style="background: #fee2e2; color: #991b1b; padding: 14px 18px; border-radius: 6px; margin-bottom: 12px; font-weight: 500;">
+        {{lists.error}}
     </div>
+    <a routerLink="/listas/{{list.id}}" (click)="onListClick(list)" *ngFor="let list of lists.listas | async" [@enterState] style="text-decoration: none; display: block;">
+        <article class="card block large-padding top-space with-badge">
+            <h4>{{list.titulo}}</h4>
+            <div class="badge">
+                <span>0</span>
+            </div>
+        </article>
+    </a>
 </div>

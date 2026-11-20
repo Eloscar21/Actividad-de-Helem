@@ -1,5 +1,5 @@
 <todo-creator [id]="listId"></todo-creator>
 
 <div class="lateral-padding" style="overflow-x: hidden; padding-bottom: 16px;">
-    <todo-card *ngFor="let todo of todos | async" [todo]="todo"></todo-card>
+    <todo-card *ngFor="let todo of todos | async" [todo]="todo" [listId]="listId"></todo-card>
 </div>

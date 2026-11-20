@@ -1,7 +1,19 @@
-<article
-    class="card large-padding top-space pointer"
-    (pointerdown)="onPointerDown($event)"
-    style="user-select: none; touch-action: none;">
-    <h4 style="margin: 0;">{{todo?.content}}</h4>
-    <p *ngIf="todo.description" style="margin: 8px 0 0 0;">{{todo.description}}</p>
-</article>
+<div *ngIf="!isRemoved" class="top-space" style="position: relative; overflow: hidden;">
+    <div
+        *ngIf="offsetX < 0"
+        style="position: absolute; top: 0; right: 0; bottom: 0; display: flex; align-items: center; padding-right: 16px;">
+        <button type="button" class="no-background pointer" style="color: #2196F3; font-size: 1.3rem;">
+            <i class="fa fa-bell"></i>
+        </button>
+    </div>
+
+    <article
+        class="card large-padding pointer"
+        (pointerdown)="onPointerDown($event)"
+        [style.transform]="'translateX(' + offsetX + 'px)'"
+        [style.transition]="isPressing ? 'none' : 'transform 0.25s ease-out'"
+        style="user-select: none; touch-action: none; position: relative; z-index: 1;">
+        <h4 style="margin: 0;">{{todo?.content}}</h4>
+        <p *ngIf="todo.description" style="margin: 8px 0 0 0;">{{todo.description}}</p>
+    </article>
+</div>

@@ -153,6 +153,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class listCreatorComponent implements OnInit {
     public lista: ILista = { titulo: '' };
+    public mensaje: string = '';
+    public errorMsg: string = '';
     private currentUser: any;
 
     constructor(
@@ -170,6 +172,12 @@ export class listCreatorComponent implements OnInit {
     }
 
     save() {
+        if (!this.lista.titulo || !this.lista.titulo.trim()) {
+            return;
+        }
+        this.mensaje = '';
+        this.errorMsg = '';
+
         if (this.currentUser) {
             this.lista.userUid = this.currentUser.uid;
             this.lista.userName = this.currentUser.name || this.currentUser.displayName || '';
@@ -178,13 +186,15 @@ export class listCreatorComponent implements OnInit {
         console.log('Guardando lista:', this.lista);
 
         // Enviar a la terminal del servidor
-        this.http.post('/api/log', { tipo: 'Nueva Lista', datos: this.lista }).subscribe();
+        this.http.post('/api/log', { tipo: 'Nueva Lista', datos: this.lista }).subscribe(() => {}, () => {});
 
         this.listS.add(this.lista).then(res => {
             console.log('¡Lista guardada exitosamente!', res);
+            this.mensaje = '¡Lista guardada en Firebase!';
             this.reset(); // Limpiar el input después de guardar
         }).catch(err => {
             console.error('Error al guardar:', err);
+            this.errorMsg = 'No se pudo guardar en Firebase: ' + (err && err.message ? err.message : 'Permisos denegados en Firestore (revisa Reglas en Firebase Console).');
         });
     }
 

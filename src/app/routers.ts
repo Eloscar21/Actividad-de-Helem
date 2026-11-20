@@ -9,11 +9,11 @@ import { LibroCreatorComponent } from './creator/libro.creator.component';
 import { ListComponent } from './creator/listas/list.component';
 
 export const routes: Routes = [
-    { path: '', component: HomeComponent, pathMatch: 'full' },
+    { path: '', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
-    { path: 'creator', component: listCreatorComponent },
-    { path: 'libro/nuevo', component: LibroCreatorComponent },
-    { path: 'listas/:id', component: ListComponent },
-    { path: 'lists/:id', component: ListComponent },
+    { path: 'creator', component: listCreatorComponent, canActivate: [AuthGuard] },
+    { path: 'libro/nuevo', component: LibroCreatorComponent, canActivate: [AuthGuard] },
+    { path: 'listas/:id', component: ListComponent, canActivate: [AuthGuard] },
+    { path: 'lists/:id', component: ListComponent, canActivate: [AuthGuard] },
 ];

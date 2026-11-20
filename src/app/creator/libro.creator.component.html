@@ -5,4 +5,10 @@
             <i class="fa fa-book"></i> Guardar Libro
         </button>
     </div>
+    <div *ngIf="mensaje" style="margin-top: 12px; padding: 10px 14px; background: #dcfce7; color: #166534; border-radius: 6px; font-size: 0.9rem;">
+        {{mensaje}}
+    </div>
+    <div *ngIf="errorMsg" style="margin-top: 12px; padding: 10px 14px; background: #fee2e2; color: #991b1b; border-radius: 6px; font-size: 0.9rem;">
+        {{errorMsg}}
+    </div>
 </div>
