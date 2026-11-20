@@ -36,9 +36,29 @@ export class TodoService {
         } catch (e) { }
     }
 
-    isHiddenOnPage(todoId?: string): boolean {
+    isHiddenOnPage(todo: ITodo): boolean {
+        if (!todo || !todo.id) {
+            return false;
+        }
         this.loadHiddenTodos();
-        return !!todoId && this.hiddenTodoIds.has(todoId);
+        // Si en Firebase el status se cambió a 1 (o cualquier valor distinto de 0), mostrarlo en la página
+        if (todo.status !== undefined && todo.status !== null && Number(todo.status) !== 0) {
+            if (this.hiddenTodoIds.has(todo.id)) {
+                this.hiddenTodoIds.delete(todo.id);
+                this.saveHiddenTodos();
+            }
+            return false;
+        }
+        return this.hiddenTodoIds.has(todo.id);
+    }
+
+    markHiddenLocally(todoId?: string) {
+        if (!todoId) {
+            return;
+        }
+        this.loadHiddenTodos();
+        this.hiddenTodoIds.add(todoId);
+        this.saveHiddenTodos();
     }
 
     hideOnPageAndSetStatusZero(listId: string, todo: ITodo): Promise<any> {

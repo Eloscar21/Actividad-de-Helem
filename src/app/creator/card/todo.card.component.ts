@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, HostListener } from "@angular/core";
+import { Component, OnInit, OnChanges, SimpleChanges, Input, HostListener } from "@angular/core";
 import { ITodo } from "../../structures/todos";
 import { TodoService } from "../../services/todos.service";
 
@@ -6,7 +6,7 @@ import { TodoService } from "../../services/todos.service";
     selector: 'todo-card',
     templateUrl: 'todo.card.component.html'
 })
-export class TodoCardComponent implements OnInit {
+export class TodoCardComponent implements OnInit, OnChanges {
     @Input() todo!: ITodo;
     @Input() listId!: string;
 
@@ -18,12 +18,44 @@ export class TodoCardComponent implements OnInit {
     private startX: number = 0;
     private rawDeltaX: number = 0;
     private activePointerId: number | null = null;
+    private previousStatus: any = undefined;
 
     constructor(private todoS: TodoService) { }
 
     ngOnInit(): void {
-        if (this.todo && this.todoS.isHiddenOnPage(this.todo.id)) {
+        this.syncVisibilityWithStatus();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['todo'] && this.todo) {
+            this.syncVisibilityWithStatus();
+        }
+    }
+
+    private syncVisibilityWithStatus(): void {
+        if (!this.todo) {
+            return;
+        }
+        const currentStatus = Number(this.todo.status);
+
+        // Si en Firebase cambiaron el status de un valor != 0 a 0, ocultarlo
+        if (this.previousStatus !== undefined && this.previousStatus !== 0 && currentStatus === 0) {
+            this.todoS.markHiddenLocally(this.todo.id);
             this.isRemoved = true;
+            this.previousStatus = currentStatus;
+            return;
+        }
+
+        this.previousStatus = currentStatus;
+
+        if (this.todoS.isHiddenOnPage(this.todo)) {
+            this.isRemoved = true;
+        } else {
+            this.isRemoved = false;
+            this.isRemoving = false;
+            if (!this.isPressing) {
+                this.offsetX = 0;
+            }
         }
     }
 
