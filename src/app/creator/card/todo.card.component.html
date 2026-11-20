@@ -16,7 +16,7 @@
         <h4 style="margin: 0;">{{todo?.content}}</h4>
         <p *ngIf="todo.description" style="margin: 8px 0 0 0;">{{todo.description}}</p>
         <p *ngIf="todo.deadline" style="margin: 8px 0 0 0;">
-            <i class="fa fa-calendar"></i> {{todo.deadline}}
+            <i class="fa fa-calendar"></i> {{getDeadlineText()}}
         </p>
     </article>
 </div>

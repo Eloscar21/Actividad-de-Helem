@@ -32,6 +32,55 @@ export class TodoCardComponent implements OnInit, OnChanges {
         }
     }
 
+    getDeadlineText(): string {
+        if (!this.todo || !this.todo.deadline) {
+            return '';
+        }
+
+        const raw = String(this.todo.deadline).trim();
+        let targetDate: Date | null = null;
+
+        // Formato DD/MM/YYYY ...
+        const dmyMatch = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+        // Formato YYYY-MM-DD ...
+        const ymdMatch = raw.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+
+        if (dmyMatch) {
+            const day = parseInt(dmyMatch[1], 10);
+            const month = parseInt(dmyMatch[2], 10) - 1;
+            const year = parseInt(dmyMatch[3], 10);
+            targetDate = new Date(year, month, day);
+        } else if (ymdMatch) {
+            const year = parseInt(ymdMatch[1], 10);
+            const month = parseInt(ymdMatch[2], 10) - 1;
+            const day = parseInt(ymdMatch[3], 10);
+            targetDate = new Date(year, month, day);
+        } else {
+            const parsed = new Date(raw);
+            if (!isNaN(parsed.getTime())) {
+                targetDate = new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
+            }
+        }
+
+        if (!targetDate) {
+            return raw;
+        }
+
+        const now = new Date();
+        const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+        const targetMidnight = targetDate.getTime();
+        const diffDays = Math.round((targetMidnight - todayMidnight) / (1000 * 60 * 60 * 24));
+
+        if (diffDays < 0) {
+            const diasAtras = Math.abs(diffDays);
+            return `${diasAtras} ${diasAtras === 1 ? 'día después' : 'días después'}`;
+        } else if (diffDays > 0) {
+            return `${diffDays} ${diffDays === 1 ? 'día faltante' : 'días faltantes'}`;
+        } else {
+            return 'Hoy';
+        }
+    }
+
     private syncVisibilityWithStatus(): void {
         if (!this.todo) {
             return;
